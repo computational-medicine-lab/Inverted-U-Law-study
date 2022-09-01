@@ -8,7 +8,7 @@ load('data.mat')        % behavioral data (cor/inc cor - reaction time)
 
 
 
-for subj = [3]
+for subj = [3,4,6,7,8,11]
     
         %find performance state using one bin and one con [EM algorithm]
             pcrit = 0.95;
@@ -425,14 +425,6 @@ for subj = [3]
         IUL_DATA(subj).Full = IUL_full;
 
 end
-
-
-
-
-
-
-
-
 
 
 

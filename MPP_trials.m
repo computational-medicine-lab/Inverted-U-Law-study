@@ -3,7 +3,7 @@
 clear;
 close all;
 clc;
-for subj = 3
+for subj = [3,4,6,7,8,11]
     
         load('pre_MPP.mat');
         
