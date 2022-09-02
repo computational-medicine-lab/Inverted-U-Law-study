@@ -6,12 +6,11 @@
 % Medicine & Biology Society (EMBC). IEEE, 2021.]
 
 % MPP filter:
-% The main scriptis for Marked point process EM created by
+% The main script is to run the subroutines for Marked point process EM created by
 % Dilranjan Wickramasuriya and updated by Saman Khazaei on Sept 2nd 2022
-% Corresponding publication: 
-% [Wickramasuriya, Dilranjan S., and Rose T. Faghih. "A marked point process filtering approach for 
-% tracking sympathetic arousal from skin conductance." IEEE Access 8 (2020): 68499-68513.]
-
+% Corresponding publication: Wickramasuriya, Dilranjan S., and Rose T. Faghih. 
+% "A marked point process filtering approach for tracking sympathetic arousal from skin conductance." 
+% IEEE Access 8 (2020): 68499-68513.
 
 clear;
 close all;
