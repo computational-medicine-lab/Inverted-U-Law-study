@@ -2,7 +2,7 @@ function [alph, beta, gamma, rho, sig2e, sig2v, xnew, signewsq, muone, a, stats]
     = mixedlearningcurve2(N, Z, background_prob, rhog, alphag, betag, sig2eg, sig2vg, startflag)
 %Script to run the subroutines for binomial EM Updated by Anne Smith, Nov
 %29, 2010 Michael Prerau Anne Smith, October 15th, 2003
-% 
+
 %variables to be reset by user:
 %        N                        The discrete process cornum (1 by
 %        num_trials) vector of number correct at each trial N(1,:)

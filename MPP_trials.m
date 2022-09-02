@@ -1,9 +1,15 @@
-% MPP
-% base for timing and patches are trials ( neglect the instructions and block times and ... )
+
+% MPP filter:
+% Script to run the subroutines for Marked point process EM created by
+% Dilranjan Wickramasuriya and updated by Saman Khazaei on Sept 2nd 2022
+% Corresponding publication: Wickramasuriya, Dilranjan S., and Rose T. Faghih. 
+% "A marked point process filtering approach for tracking sympathetic arousal from skin conductance." 
+% IEEE Access 8 (2020): 68499-68513.
+
 clear;
 close all;
 clc;
-for subj = [3,4,6,7,8,11]
+for subj = [3,4,6,7,8,11]  % subject number
     
         load('pre_MPP.mat');
         
