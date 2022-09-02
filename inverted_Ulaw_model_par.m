@@ -1,4 +1,15 @@
 
+% This script has been updated by Saman Khazaei on Sept 2nd 2022 to 
+% perform a regression analysis for the quantified cognitive arousal and performance.
+% This code correponds to: 
+
+% [Khazaei, Saman, Md Rafiul Amin, and Rose T. Faghih. "Decoding a Neurofeedback-Modulated Cognitive Arousal 
+% State to Investigate Performance Regulation by the Yerkes-Dodson Law." 
+% 2021 43rd Annual International Conference of the IEEE Engineering in
+% Medicine & Biology Society (EMBC). IEEE, 2021.]
+
+
+
 clear;
 close all;
 clc;
