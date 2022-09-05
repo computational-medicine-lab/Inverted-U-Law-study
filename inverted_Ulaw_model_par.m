@@ -8,31 +8,42 @@
 % 2021 43rd Annual International Conference of the IEEE Engineering in
 % Medicine & Biology Society (EMBC). IEEE, 2021.]
 
+% EM MPP filter function to find the arousal state created by:
+% Dilranjan Wickramasuriya and updated by Saman Khazaei on Sept 2nd 2022
+% Corresponding publication to cite: 
+% [Wickramasuriya, Dilranjan S., and Rose T. Faghih. "A marked point process filtering approach for 
+% tracking sympathetic arousal from skin conductance." IEEE Access 8 (2020): 68499-68513.]
+
+% EM ESTIMATION to find performance state using one bin and one con [EM algorithm] has been written based on:
+% Michael Prerau and  Anne Smith work so please cite their work if youv are using this code:
+% [Prerau, Michael J., et al. 
+% "Characterizing learning by simultaneous analysis of continuous and binary measures of performance." 
+% Journal of neurophysiology 102.5 (2009): 3060-3072.] 
+% And also:
+% [Prerau, Michael J., et al. "A mixed filter algorithm for cognitive state estimation from simultaneously 
+% recorded continuous and binary measures of performance."
+% Biological cybernetics 99.1 (2008): 1-14.]
 
 
 clear;
 close all;
 clc;
 
-load('MPP_result.mat')
+load('pre_MPP.mat');
+
 load('data.mat')        % behavioral data (cor/inc cor - reaction time)
+addpath('dependencies');
+
+sub_num = [3,4,6,7,8,11]; % subject number
+
+for subj = sub_num
 
 
-
-for subj = [3,4,6,7,8,11] % subject number
+    MPP_result = MPP_trials(pre_MPP,sub_num); % %RUN EM ESTIMATION to find arousal state using mpp observation [EM algorithm]
 
        %----------------------------------------------------------------------------------------
-       % %RUN EM ESTIMATION and find performance state using one bin and one con [EM algorithm]
-       
-       % This function has been written based on:
-       % Michael Prerau and  Anne Smith work and please cite:
-       % [Prerau, Michael J., et al. 
-       % "Characterizing learning by simultaneous analysis of continuous and binary measures of performance." 
-       % Journal of neurophysiology 102.5 (2009): 3060-3072.] 
-       % And also:
-       % [Prerau, Michael J., et al. "A mixed filter algorithm for cognitive state estimation from simultaneously 
-       % recorded continuous and binary measures of performance."
-       % Biological cybernetics 99.1 (2008): 1-14.]
+       % %RUN EM ESTIMATION to find performance state using one bin and one con [EM algorithm]
+      
 
         pcrit = 0.95;
          n = data(subj).n; 
@@ -176,7 +187,7 @@ for subj = [3,4,6,7,8,11] % subject number
             z_x_prf_v_1b(tb,:) = zscore(x_prf_v_1b(tb,:));
         end
 
-        % vexing 3 back
+        % vexing 3 back regression analysis
         zx_smth_v_3b = (reshape(z_x_smth_v_3b',1,8*22))';
         zx_prf_v_3b = (reshape(z_x_prf_v_3b',1,8*22))';
 
@@ -191,7 +202,7 @@ for subj = [3,4,6,7,8,11] % subject number
         %plotSlice(lm_v_3b)
 
 
-        % vexing 1 back
+        % vexing 1 back regression analysis
         zx_smth_v_1b = (reshape(z_x_smth_v_1b',1,8*22))';
         zx_prf_v_1b = (reshape(z_x_prf_v_1b',1,8*22))';
 
@@ -206,7 +217,7 @@ for subj = [3,4,6,7,8,11] % subject number
 
 
 
-        % calming 3 back
+        % calming 3 back regression analysis
         zx_smth_c_3b = (reshape(z_x_smth_c_3b',1,8*22))';
         zx_prf_c_3b = (reshape(z_x_prf_c_3b',1,8*22))';
 
@@ -220,7 +231,7 @@ for subj = [3,4,6,7,8,11] % subject number
         %plotSlice(lm_c_3b)
 
 
-        % calming 1 back
+        % calming 1 back regression analysis
         zx_smth_c_1b = (reshape(z_x_smth_c_1b',1,8*22))';
         zx_prf_c_1b = (reshape(z_x_prf_c_1b',1,8*22))';
 
@@ -242,7 +253,7 @@ for subj = [3,4,6,7,8,11] % subject number
         lm_full = fitlm(tbl_full,'purequadratic','RobustOpts','on');
         %plotSlice(lm_full)
 
-        % calming section
+        % calming section regression analysis
 
         s = 0;
         c1 = 1;
@@ -299,7 +310,7 @@ for subj = [3,4,6,7,8,11] % subject number
         zx_prf_pred_v = lm_v.Fitted;
         %plotSlice(lm_v)
 
-        % only 1 backs
+        % only 1 backs regression analysis
 
         zx_smth_1b = [zx_smth_c_1b;zx_smth_v_1b];
         zx_prf_1b = [zx_prf_c_1b;zx_prf_v_1b];
@@ -313,7 +324,7 @@ for subj = [3,4,6,7,8,11] % subject number
         zx_prf_pred_1b = lm_1b.Fitted;
         %plotSlice(lm_1b)
 
-        % only 3 backs
+        % only 3 backs regression analysis
 
         zx_smth_3b = [zx_smth_c_3b;zx_smth_v_3b];
         zx_prf_3b = [zx_prf_c_3b;zx_prf_v_3b];
@@ -327,7 +338,7 @@ for subj = [3,4,6,7,8,11] % subject number
         zx_prf_pred_3b = lm_3b.Fitted;
         %plotSlice(lm_3b)
 
-        % full data
+        % full data regression analysis
         zx_smth_full = [zx_smth_c';zx_smth_v'];
         zx_prf_full = [zx_prf_c';zx_prf_v'];
         tbl_full = table(zx_smth_full,zx_prf_full,'VariableNames',{'Full-arsl','Full-prf'});
@@ -346,7 +357,7 @@ for subj = [3,4,6,7,8,11] % subject number
 
         %chi2 = chi_squared(zx_prf_full,zx_prf_pred_full,3,eps)
 
-        % data c1
+        % data c1 (calmjing 1-back task)
         IUL_c1(subj).a_coef = a_coef_c_1b;
         IUL_c1(subj).b_coef = b_coef_c_1b;
         IUL_c1(subj).c_coef = c_coef_c_1b;
@@ -355,7 +366,7 @@ for subj = [3,4,6,7,8,11] % subject number
         IUL_c1(subj).zx_prf_pred = zx_prf_pred_c_1b;
 
 
-        % data c3
+        % data c3 (calming 3-back task)
         IUL_c3(subj).a_coef = a_coef_c_3b;
         IUL_c3(subj).b_coef = b_coef_c_3b;
         IUL_c3(subj).c_coef = c_coef_c_3b;
@@ -364,7 +375,7 @@ for subj = [3,4,6,7,8,11] % subject number
         IUL_c3(subj).zx_prf_pred = zx_prf_pred_c_3b;
 
 
-        % data v1
+        % data v1 (vexing 1-back task)
         IUL_v1(subj).a_coef = a_coef_v_1b;
         IUL_v1(subj).b_coef = b_coef_v_1b;
         IUL_v1(subj).c_coef = c_coef_v_1b;
@@ -373,7 +384,7 @@ for subj = [3,4,6,7,8,11] % subject number
         IUL_v1(subj).zx_prf_pred = zx_prf_pred_v_1b;
 
 
-        % data v3
+        % data v3 (vexing 3-back task)
         IUL_v3(subj).a_coef = a_coef_v_3b;
         IUL_v3(subj).b_coef = b_coef_v_3b;
         IUL_v3(subj).c_coef = c_coef_v_3b;
@@ -415,7 +426,7 @@ for subj = [3,4,6,7,8,11] % subject number
         IUL_3b(subj).zx_prf = zx_prf_3b;
         IUL_3b(subj).zx_prf_pred = zx_prf_pred_3b;
 
-        % data full
+        % data full experiment
         IUL_full(subj).a_coef = a_coef_full;
         IUL_full(subj).b_coef = b_coef_full;
         IUL_full(subj).c_coef = c_coef_full;
@@ -425,7 +436,7 @@ for subj = [3,4,6,7,8,11] % subject number
 
         save('IUL_data.mat','IUL_c1', 'IUL_c3', 'IUL_v1' ,'IUL_v3', 'IUL_c', 'IUL_v','IUL_1b', 'IUL_3b', 'IUL_full')
 
-
+      
         IUL_DATA(subj).C = IUL_c;
         IUL_DATA(subj).V = IUL_v;
 
@@ -442,7 +453,43 @@ for subj = [3,4,6,7,8,11] % subject number
 
 end
 
+% Main Figure
 
+figure('position', [0 0 315 315]);
+for l = 1:length(subj)
+        
+    x(:,l) = IUL_DATA(subj(l)).Full(subj(l)).zx_smth;
+    z(:,l) = IUL_DATA(subj(l)).Full(subj(l)).zx_prf_pred;
+    
+    z_prf_act(:,l) = IUL_DATA(subj(l)).Full(subj(l)).zx_prf;
+ 
+    [sortedX(:,l), sortIndex(:,l)] = sort(x(:,l));
+    sortedX_prf(:,l) = z(sortIndex(:,l),l);
+    sortedX_prf_act(:,l) = z_prf_act(sortIndex(:,l),l);
+
+ 
+    %subplot(2,length(subj)/2,l)
+    subplot(1,1,1)
+
+    plot(sortedX(:,l),sortedX_prf(:,l),'b', 'linewidth', 1)
+    hold on
+    scatter(IUL_DATA(subj(l)).Full(subj(l)).zx_smth,IUL_DATA(subj(l)).Full(subj(l)).zx_prf,'r','MarkerEdgeAlpha',.49)
+  
+    title(['Participant ' num2str(l)],'FontSize', 12);
+    
+    %plot(sortedX(:,l),sortedX_prf(:,l),'b', 'linewidth', 1)
+    ylim([-3 3]);
+    
+    xlim([-3 3])
+    
+    xlabel({'arousal'},'FontSize', 9);
+    ylabel('performance','FontSize', 9);
+    %legend('predicted','actuall')
+    
+    
+    set(gca,'LineWidth',1);
+ 
+end
 
 
 
