@@ -1,4 +1,5 @@
 
+
 % This script has been updated by Saman Khazaei on Sept 2nd 2022 to 
 % perform a regression analysis for the quantified cognitive arousal and performance.
 % This code correponds to: 
@@ -34,22 +35,22 @@ load('pre_MPP.mat');
 load('data.mat')        % behavioral data (cor/inc cor - reaction time)
 addpath('dependencies');
 
-sub_num = [3,4,6,7,8,11]; % subject number
+sub_num = [4]; % subject number
 
 for subj = sub_num
 
 
-    MPP_result = MPP_trials(pre_MPP,sub_num); % %RUN EM ESTIMATION to find arousal state using mpp observation [EM algorithm]
+    %MPP_result = MPP_trials(pre_MPP,sub_num); % %RUN EM ESTIMATION to find arousal state using mpp observation [EM algorithm]
 
        %----------------------------------------------------------------------------------------
        % %RUN EM ESTIMATION to find performance state using one bin and one con [EM algorithm]
       
 
-        pcrit = 0.95;
+         pcrit = 0.95;
          n = data(subj).n; 
          backprobg = sum(n)/length(n);
          r = data(subj).r;
-        startflag = 2;  %this can take values 0 or 2
+         startflag = 2;  %this can take values 0 or 2
                         %0 fixes the initial condition at backprobg 2 initial
                         %condition is estimated
             %these are all starting guesses
@@ -58,13 +59,15 @@ for subj = sub_num
             isig2e = 0.05;
             isig2v = 0.05;
             irho = 1; %fixed in this code
+            cvgce_crit = 1e-6; %convergence criterion 
+
 
         [alph, beta, gamma, rho, sig2e, sig2v, xnew, signewsq, muone, a, stats] ...
-                            = mixedlearningcurve2(n, r, backprobg, irho, ialpha, ibeta, isig2e, isig2v, startflag);
+                            = mixedlearningcurve2(n, r, backprobg, irho, ialpha, ibeta, isig2e, isig2v, startflag, cvgce_crit);
         %----------------------------------------------------------------------------------------
                    
-        x_prf = xnew;
-        x_prf = (x_prf(1:704));
+        x_prf = [xnew(2:round(length(xnew)/2)-1),xnew(round(length(xnew)/2)+1:end-1)];
+        
 
         pre_MPP = MPP_result(subj).pre_MPP;
 
@@ -490,6 +493,3 @@ for l = 1:length(subj)
     set(gca,'LineWidth',1);
  
 end
-
-
-
