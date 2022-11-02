@@ -40,7 +40,7 @@ sub_num = [4]; % subject number
 for subj = sub_num
 
 
-    %MPP_result = MPP_trials(pre_MPP,sub_num); % %RUN EM ESTIMATION to find arousal state using mpp observation [EM algorithm]
+    MPP_result = MPP_trials(pre_MPP,sub_num); % %RUN EM ESTIMATION to find arousal state using mpp observation [EM algorithm]
 
        %----------------------------------------------------------------------------------------
        % %RUN EM ESTIMATION to find performance state using one bin and one con [EM algorithm]
